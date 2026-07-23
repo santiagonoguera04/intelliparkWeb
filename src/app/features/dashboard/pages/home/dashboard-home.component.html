@@ -1,0 +1,64 @@
+<section class="dashboard-grid">
+  <div class="hero-card">
+    <div>
+      <span class="eyebrow">Panel operativo</span>
+      <h2>Bienvenido a IntelliPark</h2>
+      <p>
+        Desde este panel podrás gestionar ingresos, salidas, vehículos, pagos,
+        usuarios y reportes del parqueadero.
+      </p>
+    </div>
+
+    <button type="button">
+      Registrar ingreso
+    </button>
+  </div>
+
+  <div class="cards-grid">
+    @for (card of summaryCards; track card.title) {
+      <article class="stat-card">
+        <span>{{ card.title }}</span>
+        <strong>{{ card.value }}</strong>
+        <small>{{ card.helper }}</small>
+      </article>
+    }
+  </div>
+
+  <div class="content-grid">
+    <article class="panel large">
+      <div class="panel-header">
+        <h3>Actividad reciente</h3>
+        <button type="button">Ver todo</button>
+      </div>
+
+      <div class="activity-list">
+        <div class="activity-item">
+          <strong>Vehículo ingresado</strong>
+          <span>Registro pendiente de conexión con API</span>
+        </div>
+
+        <div class="activity-item">
+          <strong>Salida de vehículo</strong>
+          <span>Próximo módulo: parking check-out</span>
+        </div>
+
+        <div class="activity-item">
+          <strong>Pago registrado</strong>
+          <span>Se conectará al módulo de pagos</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-header">
+        <h3>Accesos rápidos</h3>
+      </div>
+
+      <ul class="quick-list">
+        @for (item of quickItems; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+    </article>
+  </div>
+</section>

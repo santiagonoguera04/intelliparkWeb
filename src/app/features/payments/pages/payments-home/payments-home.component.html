@@ -1,0 +1,141 @@
+<section class="payments-page">
+  <div class="module-header">
+    <div>
+      <span class="eyebrow">Gestión financiera</span>
+      <h2>Pagos</h2>
+      <p>
+        Registra pagos asociados a parqueos finalizados y consulta el historial de pagos.
+      </p>
+    </div>
+
+    <button type="button" (click)="loadPayments()" [disabled]="isLoading()">
+      Actualizar pagos
+    </button>
+  </div>
+
+  @if (successMessage()) {
+    <div class="alert success">
+      {{ successMessage() }}
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert error">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <div class="payments-actions">
+    <article class="panel">
+      <h3>Registrar pago</h3>
+
+      <form [formGroup]="paymentForm" (ngSubmit)="createPayment()">
+        <label>
+          ID del parqueo
+          <input
+            type="number"
+            formControlName="payment_parking_id"
+            placeholder="1"
+          />
+        </label>
+
+        <label>
+          Método de pago
+          <select formControlName="payment_method">
+            <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="transferencia">Transferencia</option>
+          </select>
+        </label>
+
+        <label>
+          Referencia
+          <input
+            type="text"
+            formControlName="payment_reference"
+            placeholder="REF-12345"
+          />
+        </label>
+
+        <button type="submit" [disabled]="isLoading()">
+          Registrar pago
+        </button>
+      </form>
+    </article>
+
+    <article class="panel">
+      <h3>Buscar pago por parqueo</h3>
+
+      <form [formGroup]="searchForm" (ngSubmit)="searchPaymentByParkingId()">
+        <label>
+          ID del parqueo
+          <input
+            type="number"
+            formControlName="payment_parking_id"
+            placeholder="1"
+          />
+        </label>
+
+        <button type="submit" [disabled]="isLoading()">
+          Buscar pago
+        </button>
+      </form>
+
+      @if (foundPayment()) {
+        <div class="payment-result">
+          <strong>Pago #{{ foundPayment()?.payment_id }}</strong>
+          <span>Parking ID: {{ foundPayment()?.payment_parking_id }}</span>
+          <span>Método: {{ foundPayment()?.payment_method }}</span>
+          <span>Valor: {{ foundPayment()?.payment_amount || 'No disponible' }}</span>
+          <span>Referencia: {{ foundPayment()?.payment_reference || 'Sin referencia' }}</span>
+        </div>
+      }
+    </article>
+  </div>
+
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Historial de pagos</h3>
+
+      @if (isLoading()) {
+        <span>Cargando...</span>
+      } @else {
+        <span>{{ payments().length }} pagos registrados</span>
+      }
+    </div>
+
+    @if (payments().length === 0 && !isLoading()) {
+      <p class="empty-state">
+        No hay pagos registrados.
+      </p>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID pago</th>
+              <th>ID parking</th>
+              <th>Método</th>
+              <th>Valor</th>
+              <th>Referencia</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (payment of payments(); track payment.payment_id) {
+              <tr>
+                <td>{{ payment.payment_id }}</td>
+                <td>{{ payment.payment_parking_id }}</td>
+                <td>{{ payment.payment_method }}</td>
+                <td>{{ payment.payment_amount || 'No disponible' }}</td>
+                <td>{{ payment.payment_reference || 'Sin referencia' }}</td>
+                <td>{{ payment.payment_created_at || 'No disponible' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </article>
+</section>

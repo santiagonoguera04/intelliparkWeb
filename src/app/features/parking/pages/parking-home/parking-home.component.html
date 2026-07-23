@@ -1,0 +1,120 @@
+<section class="parking-page">
+  <div class="module-header">
+    <div>
+      <span class="eyebrow">Operación principal</span>
+      <h2>Gestión de Parking</h2>
+      <p>
+        Registra ingresos, salidas y consulta los vehículos activos dentro del parqueadero.
+      </p>
+    </div>
+
+    <button type="button" (click)="loadActiveRecords()" [disabled]="isLoading()">
+      Actualizar activos
+    </button>
+  </div>
+
+  @if (successMessage()) {
+    <div class="alert success">
+      {{ successMessage() }}
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert error">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <div class="parking-actions">
+    <article class="panel">
+      <h3>Registrar ingreso</h3>
+
+      <form [formGroup]="checkInForm" (ngSubmit)="registerCheckIn()">
+        <label>
+          Placa
+          <input
+            type="text"
+            formControlName="vehicle_plate"
+            placeholder="ABC123"
+          />
+        </label>
+
+        <label>
+          Tipo de vehículo
+          <select formControlName="vehicle_type">
+            <option value="carro">Carro</option>
+            <option value="moto">Moto</option>
+            <option value="bicicleta">Bicicleta</option>
+          </select>
+        </label>
+
+        <button type="submit" [disabled]="isLoading()">
+          Registrar ingreso
+        </button>
+      </form>
+    </article>
+
+    <article class="panel">
+      <h3>Registrar salida</h3>
+
+      <form [formGroup]="checkOutForm" (ngSubmit)="registerCheckOut()">
+        <label>
+          Placa
+          <input
+            type="text"
+            formControlName="vehicle_plate"
+            placeholder="ABC123"
+          />
+        </label>
+
+        <button type="submit" [disabled]="isLoading()">
+          Registrar salida
+        </button>
+      </form>
+    </article>
+  </div>
+
+  <article class="panel active-panel">
+    <div class="panel-header">
+      <h3>Vehículos activos</h3>
+
+      @if (isLoading()) {
+        <span>Cargando...</span>
+      } @else {
+        <span>{{ activeRecords().length }} activos</span>
+      }
+    </div>
+
+    @if (activeRecords().length === 0 && !isLoading()) {
+      <p class="empty-state">
+        No hay vehículos activos en este momento.
+      </p>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID parking</th>
+              <th>Placa</th>
+              <th>Tipo</th>
+              <th>Entrada</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (record of activeRecords(); track record.parking_id) {
+              <tr>
+                <td>{{ record.parking_id }}</td>
+                <td>{{ record.vehicle_plate || 'Sin placa' }}</td>
+                <td>{{ record.vehicle_type || 'No definido' }}</td>
+                <td>{{ record.parking_entry_time || 'No disponible' }}</td>
+                <td>{{ record.parking_status || 'Activo' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </article>
+</section>

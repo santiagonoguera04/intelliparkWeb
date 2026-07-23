@@ -1,0 +1,96 @@
+<div class="login-panel">
+  <section class="brand-panel">
+    <div class="brand-content">
+      <div class="brand-badge">A</div>
+      <p class="brand-welcome">Bienvenido a</p>
+      <h1>Tu Aplicación</h1>
+      <div class="brand-divider"></div>
+      <p class="brand-copy">La mejor solución para tu empresa</p>
+    </div>
+
+    <div class="brand-illustration">
+      <div class="screen"></div>
+      <div class="window small"></div>
+      <div class="window medium"></div>
+      <div class="shield"></div>
+      <div class="base"></div>
+    </div>
+  </section>
+
+  <section class="form-panel">
+    <div class="form-body">
+      <header class="form-header">
+        <h2>Iniciar Sesión</h2>
+        <p>Ejemplo visual Angular con validaciones y navegación al dashboard.</p>
+      </header>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+        <div class="field-group">
+          <label for="user_email">Correo Electrónico</label>
+          <div class="input-shell" [class.invalid]="emailControl().invalid && emailControl().touched">
+            <span class="input-icon">👤</span>
+            <input id="user_email" type="user_email" formControlName="user_email" placeholder="Digite el correo" />
+          </div>
+          @if (emailControl().hasError('required') && emailControl().touched) {
+            <small class="error-text">El correo es obligatorio.</small>
+          }
+          @if (emailControl().hasError('email') && emailControl().touched) {
+            <small class="error-text">Ingresa un correo válido.</small>
+          }
+        </div>
+
+        <div class="field-group">
+          <label for="user_password">Contraseña</label>
+          <div class="input-shell" [class.invalid]="passwordControl().invalid && passwordControl().touched">
+            <span class="input-icon">🔒</span>
+            <input
+              id="user_password"
+              [type]="hidePassword() ? 'password' : 'text'"
+              formControlName="user_password"
+              placeholder="Digite la contraseña"
+            />
+            <button type="button" class="ghost-button" (click)="togglePasswordVisibility()">
+              {{ hidePassword() ? '👁️' : '🙈' }}
+            </button>
+          </div>
+          @if (passwordControl().hasError('required') && passwordControl().touched) {
+            <small class="error-text">La contraseña es obligatoria.</small>
+          }
+          @if (passwordControl().hasError('minlength') && passwordControl().touched) {
+            <small class="error-text">Debe tener mínimo 6 caracteres.</small>
+          }
+        </div>
+
+        <div class="actions-row">
+          <label class="remember-me">
+            <input type="checkbox" formControlName="remember" />
+            <span>Recordar sesión</span>
+          </label>
+
+          <a (click)="recovery()">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        @if (loginError()) {
+          <div class="login-alert">
+            {{ loginError() }}
+          </div>
+        }
+
+        <button type="submit" class="submit-button">Ingresar</button>
+
+        <div class="separator">
+          <span>o</span>
+        </div>
+
+        <button type="button" class="secondary-button">
+          <span>💼</span>
+          <span>Acceso Corporativo</span>
+        </button>
+      </form>
+    </div>
+
+    <footer class="auth-footer">
+      © 2026 Tu Aplicación. Todos los derechos reservados.
+    </footer>
+  </section>
+</div>

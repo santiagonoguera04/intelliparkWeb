@@ -1,0 +1,156 @@
+:host {
+  display: block;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.hero-card,
+.stat-card,
+.panel {
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #dbe2ef;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
+.hero-card {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  background:
+    radial-gradient(circle at right top, rgba(59,130,246,.16), rgba(59,130,246,0) 26%),
+    #ffffff;
+}
+
+.hero-card h2 {
+  margin: 8px 0;
+  font-size: 2rem;
+  color: #1f2a44;
+}
+
+.hero-card p {
+  margin: 0;
+  max-width: 700px;
+  color: #64748b;
+}
+
+.eyebrow {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.hero-card button,
+.panel-header button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  color: #fff;
+  background: #1d4ed8;
+  cursor: pointer;
+}
+
+.cards-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.stat-card {
+  padding: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.stat-card span {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.stat-card strong {
+  font-size: 2rem;
+  color: #1f2a44;
+}
+
+.stat-card small {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.content-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1.7fr 1fr;
+}
+
+.panel {
+  padding: 22px;
+}
+
+.panel.large {
+  min-height: 320px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.panel-header h3 {
+  margin: 0;
+  color: #1f2a44;
+}
+
+.activity-list {
+  display: grid;
+  gap: 12px;
+}
+
+.activity-item {
+  padding: 16px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.activity-item strong,
+.activity-item span {
+  display: block;
+}
+
+.activity-item span {
+  margin-top: 6px;
+  color: #64748b;
+}
+
+.quick-list {
+  padding-left: 18px;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+  color: #475569;
+}
+
+@media (max-width: 900px) {
+  .hero-card,
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

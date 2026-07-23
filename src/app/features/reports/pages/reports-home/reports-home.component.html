@@ -1,0 +1,189 @@
+<section class="reports-page">
+  <div class="module-header">
+    <div>
+      <span class="eyebrow">Reportes financieros</span>
+      <h2>Ingresos por rango de fechas</h2>
+      <p>
+        Consulta los ingresos registrados a partir de los pagos realizados en el sistema.
+      </p>
+    </div>
+  </div>
+
+  @if (successMessage()) {
+    <div class="alert success">
+      {{ successMessage() }}
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert error">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <article class="panel">
+    <h3>Filtros del reporte</h3>
+
+    <form [formGroup]="reportForm" (ngSubmit)="loadIncomeReport()">
+      <label>
+        Desde
+        <input type="date" formControlName="from" />
+      </label>
+
+      <label>
+        Hasta
+        <input type="date" formControlName="to" />
+      </label>
+
+      <button type="submit" [disabled]="isLoading()">
+        Generar reporte
+      </button>
+    </form>
+  </article>
+
+  @if (report()) {
+    <div class="summary-grid">
+      <article class="summary-card">
+        <span>Total ingresos</span>
+        <strong>
+          {{ report()?.summary?.totalIncome || 0 | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </strong>
+      </article>
+
+      <article class="summary-card">
+        <span>Total pagos</span>
+        <strong>{{ report()?.summary?.totalPayments || 0 }}</strong>
+      </article>
+
+      <article class="summary-card">
+        <span>Desde</span>
+        <strong>{{ report()?.filters?.from }}</strong>
+      </article>
+
+      <article class="summary-card">
+        <span>Hasta</span>
+        <strong>{{ report()?.filters?.to }}</strong>
+      </article>
+    </div>
+
+    <div class="reports-grid">
+      <article class="panel">
+        <div class="panel-header">
+          <h3>Ingresos por método de pago</h3>
+        </div>
+
+        @if ((report()?.byPaymentMethod?.length || 0) === 0) {
+          <p class="empty-state">No hay ingresos por método de pago.</p>
+        } @else {
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Método</th>
+                  <th>Ingresos</th>
+                  <th>Pagos</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (item of report()?.byPaymentMethod; track item.payment_method) {
+                  <tr>
+                    <td>{{ item.payment_method }}</td>
+                    <td>{{ item.total_income | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                    <td>{{ item.total_payments }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">
+          <h3>Ingresos por tipo de vehículo</h3>
+        </div>
+
+        @if ((report()?.byVehicleType?.length || 0) === 0) {
+          <p class="empty-state">No hay ingresos por tipo de vehículo.</p>
+        } @else {
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Ingresos</th>
+                  <th>Pagos</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (item of report()?.byVehicleType; track item.vehicle_type) {
+                  <tr>
+                    <td>{{ item.vehicle_type }}</td>
+                    <td>{{ item.total_income | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                    <td>{{ item.total_payments }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </article>
+    </div>
+
+    <article class="panel">
+      <div class="panel-header">
+        <h3>Detalle de pagos</h3>
+
+        @if (isLoading()) {
+          <span>Cargando...</span>
+        } @else {
+          <span>{{ report()?.paymentDetails?.length || 0 }} registros</span>
+        }
+      </div>
+
+      @if ((report()?.paymentDetails?.length || 0) === 0) {
+        <p class="empty-state">No hay pagos registrados en este rango.</p>
+      } @else {
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID pago</th>
+                <th>ID parking</th>
+                <th>Placa</th>
+                <th>Tipo</th>
+                <th>Método</th>
+                <th>Valor</th>
+                <th>Minutos</th>
+                <th>Fecha pago</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (payment of report()?.paymentDetails; track payment.payment_id) {
+                <tr>
+                  <td>{{ payment.payment_id }}</td>
+                  <td>{{ payment.payment_parking_id }}</td>
+                  <td>{{ payment.vehicle_plate || 'No disponible' }}</td>
+                  <td>{{ payment.vehicle_type || 'No disponible' }}</td>
+                  <td>{{ payment.payment_method }}</td>
+                  <td>{{ payment.payment_amount | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                  <td>{{ payment.parking_total_minutes || 0 }}</td>
+                  <td>
+                    @if (payment.payment_created_at) {
+                      {{ payment.payment_created_at | date:'short' }}
+                    } @else {
+                      No disponible
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </article>
+  }
+</section>

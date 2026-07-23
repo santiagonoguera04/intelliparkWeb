@@ -1,0 +1,138 @@
+<section class="users-page">
+  <div class="module-header">
+    <div>
+      <span class="eyebrow">Administración</span>
+      <h2>Usuarios</h2>
+      <p>
+        Consulta usuarios registrados y administra su estado dentro del sistema.
+      </p>
+    </div>
+
+    <button type="button" (click)="loadUsers()" [disabled]="isLoading()">
+      Actualizar usuarios
+    </button>
+  </div>
+
+  @if (successMessage()) {
+    <div class="alert success">
+      {{ successMessage() }}
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert error">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (!isAdmin) {
+    <div class="alert warning">
+      Tu usuario puede consultar información, pero solo un administrador puede activar o desactivar usuarios.
+    </div>
+  }
+
+  @if (selectedUser()) {
+    <article class="panel selected-user">
+      <div>
+        <h3>Usuario seleccionado</h3>
+        <p>
+          {{ selectedUser()?.user_first_name }}
+          {{ selectedUser()?.user_last_name }}
+        </p>
+      </div>
+
+      <div class="selected-user-grid">
+        <span>Email: {{ selectedUser()?.user_email }}</span>
+        <span>Rol: {{ selectedUser()?.user_role }}</span>
+        <span>
+          Estado:
+          {{ selectedUser()?.user_active ? 'Activo' : 'Inactivo' }}
+        </span>
+      </div>
+    </article>
+  }
+
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Listado de usuarios</h3>
+
+      @if (isLoading()) {
+        <span>Cargando...</span>
+      } @else {
+        <span>{{ users().length }} usuarios registrados</span>
+      }
+    </div>
+
+    @if (users().length === 0 && !isLoading()) {
+      <p class="empty-state">
+        No hay usuarios registrados.
+      </p>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (user of users(); track user.user_id) {
+              <tr>
+                <td>{{ user.user_id }}</td>
+
+                <td>
+                  {{ user.user_first_name }}
+                  {{ user.user_last_name }}
+                </td>
+
+                <td>{{ user.user_email }}</td>
+                <td>{{ user.user_role }}</td>
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [class.active]="user.user_active"
+                    [class.inactive]="!user.user_active"
+                  >
+                    {{ user.user_active ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="actions">
+                    <button
+                      type="button"
+                      class="secondary-button"
+                      (click)="viewUser(user.user_id)"
+                      [disabled]="isLoading()"
+                    >
+                      Ver
+                    </button>
+
+                    @if (isAdmin) {
+                      <button
+                        type="button"
+                        [class.danger-button]="user.user_active"
+                        [class.success-button]="!user.user_active"
+                        (click)="toggleUserStatus(user)"
+                        [disabled]="isLoading()"
+                      >
+                        {{ user.user_active ? 'Desactivar' : 'Activar' }}
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </article>
+</section>

@@ -1,0 +1,147 @@
+<section class="vehicles-page">
+  <div class="module-header">
+    <div>
+      <span class="eyebrow">Gestión operativa</span>
+      <h2>Vehículos</h2>
+      <p>
+        Registra vehículos, consulta el listado general y busca vehículos por placa.
+      </p>
+    </div>
+
+    <button type="button" (click)="loadVehicles()" [disabled]="isLoading()">
+      Actualizar listado
+    </button>
+  </div>
+
+  @if (successMessage()) {
+    <div class="alert success">
+      {{ successMessage() }}
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert error">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <div class="vehicles-actions">
+    <article class="panel">
+      <h3>Registrar vehículo</h3>
+
+      <form [formGroup]="vehicleForm" (ngSubmit)="createVehicle()">
+        <label>
+          Placa
+          <input
+            type="text"
+            formControlName="vehicle_plate"
+            placeholder="ABC123"
+          />
+        </label>
+
+        <label>
+          Tipo de vehículo
+          <select formControlName="vehicle_type">
+            <option value="carro">Carro</option>
+            <option value="moto">Moto</option>
+            <option value="bicicleta">Bicicleta</option>
+          </select>
+        </label>
+
+        <label>
+          Marca
+          <input
+            type="text"
+            formControlName="vehicle_brand"
+            placeholder="Renault"
+          />
+        </label>
+
+        <label>
+          Color
+          <input
+            type="text"
+            formControlName="vehicle_color"
+            placeholder="Gris"
+          />
+        </label>
+
+        <button type="submit" [disabled]="isLoading()">
+          Registrar vehículo
+        </button>
+      </form>
+    </article>
+
+    <article class="panel">
+      <h3>Buscar por placa</h3>
+
+      <form [formGroup]="searchForm" (ngSubmit)="searchByPlate()">
+        <label>
+          Placa
+          <input
+            type="text"
+            formControlName="vehicle_plate"
+            placeholder="ABC123"
+          />
+        </label>
+
+        <button type="submit" [disabled]="isLoading()">
+          Buscar vehículo
+        </button>
+      </form>
+
+      @if (foundVehicle()) {
+        <div class="vehicle-result">
+          <strong>{{ foundVehicle()?.vehicle_plate }}</strong>
+          <span>{{ foundVehicle()?.vehicle_type }}</span>
+          <span>{{ foundVehicle()?.vehicle_brand || 'Sin marca' }}</span>
+          <span>{{ foundVehicle()?.vehicle_color || 'Sin color' }}</span>
+        </div>
+      }
+    </article>
+  </div>
+
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Listado de vehículos</h3>
+
+      @if (isLoading()) {
+        <span>Cargando...</span>
+      } @else {
+        <span>{{ vehicles().length }} registrados</span>
+      }
+    </div>
+
+    @if (vehicles().length === 0 && !isLoading()) {
+      <p class="empty-state">
+        No hay vehículos registrados.
+      </p>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Placa</th>
+              <th>Tipo</th>
+              <th>Marca</th>
+              <th>Color</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (vehicle of vehicles(); track vehicle.vehicle_id) {
+              <tr>
+                <td>{{ vehicle.vehicle_id }}</td>
+                <td>{{ vehicle.vehicle_plate }}</td>
+                <td>{{ vehicle.vehicle_type }}</td>
+                <td>{{ vehicle.vehicle_brand || 'Sin marca' }}</td>
+                <td>{{ vehicle.vehicle_color || 'Sin color' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </article>
+</section>

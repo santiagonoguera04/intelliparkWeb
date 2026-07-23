@@ -1,0 +1,63 @@
+<div class="dashboard-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div>
+        <strong>Admin UI</strong>
+        <span>Angular Demo</span>
+      </div>
+    </div>
+
+    <nav class="menu">
+      <a class="menu-item active" href="javascript:void(0)">Dashboard</a>
+      <a
+        class="menu-item"
+        routerLink="/parking"
+        routerLinkActive="active"
+      >Parqueo</a>
+      <a
+        class="menu-item"
+        routerLink="/vehicles"
+        routerLinkActive="active"
+      >Vehículos</a>
+      <a
+        class="menu-item"
+        routerLink="/payments"
+        routerLinkActive="active"
+      >Pagos</a>
+      <a
+        class="menu-item"
+        routerLink="/users"
+        routerLinkActive="active"
+      >Usuarios</a>
+      <a
+        class="menu-item"
+        routerLink="/reports"
+        routerLinkActive="active"
+      >Reportes</a>
+      <!--<a class="menu-item" href="javascript:void(0)">Configuración</a>-->
+    </nav>
+  </aside>
+
+  <div class="content-wrapper">
+    <header class="topbar">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Plantilla base con layout administrativo.</p>
+      </div>
+
+      <div class="topbar-actions">
+        <span class="profile-chip">Mauricio</span>
+        <button type="button" (click)="logout()">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <router-outlet />
+    </main>
+
+    <footer class="page-footer">
+      © 2026 Demo Angular | Layout principal del panel administrativo
+    </footer>
+  </div>
+</div>

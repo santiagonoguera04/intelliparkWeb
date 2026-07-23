@@ -1,0 +1,152 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.dashboard-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  background: #eef2f8;
+}
+
+.sidebar {
+  padding: 24px 18px;
+  background: linear-gradient(180deg, #172554 0%, #1e3a8a 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  box-shadow: 12px 0 32px rgba(15, 23, 42, 0.12);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+}
+
+.brand strong,
+.brand span {
+  display: block;
+}
+
+.brand span {
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.brand-mark {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  font-size: 1.55rem;
+  font-weight: 800;
+  background: linear-gradient(180deg, #ef476f 0%, #b91c1c 100%);
+}
+
+.menu {
+  display: grid;
+  gap: 10px;
+}
+
+.menu-item {
+  padding: 14px 16px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #e5eeff;
+  background: transparent;
+  transition: background-color .2s ease, transform .2s ease;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background: rgba(255,255,255,0.1);
+  transform: translateX(4px);
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-width: 0;
+}
+
+.topbar {
+  padding: 24px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #dbe2ef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #23324a;
+}
+
+.topbar p {
+  margin: 4px 0 0;
+  color: #6b7280;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.profile-chip {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #334155;
+  font-weight: 700;
+}
+
+.topbar-actions button {
+  min-height: 42px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 12px;
+  color: #ffffff;
+  background: #1d4ed8;
+  cursor: pointer;
+}
+
+.page-content {
+  padding: 28px 32px;
+}
+
+.page-footer {
+  padding: 18px 32px;
+  border-top: 1px solid #dbe2ef;
+  background: #ffffff;
+  color: #64748b;
+}
+
+@media (max-width: 900px) {
+  .dashboard-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    gap: 16px;
+  }
+
+  .menu {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}
